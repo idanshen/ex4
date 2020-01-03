@@ -26,7 +26,7 @@ protected:
     int tree_size;
     StatusType find_rec(K data, generic_node<K> **ptr_to_node) const;
     StatusType swap_nodes(generic_node<K> *node1, generic_node<K> *node2);
-    void update_height(generic_node<K> *node);
+    virtual void update_height(generic_node<K> *node);
     void to_array_inorder_rec(K **array, generic_node<K> *curr_node) const;
 public:
     SearchTree<K>();
