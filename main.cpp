@@ -1,21 +1,16 @@
 #include <iostream>
-#include "RankTree.h"
+#include "UnionFind.h"
 
 int main() {
-    auto tmp_tree = RankTree<int>();
-    auto n1 = new int(2);
-    tmp_tree.insert(*n1);
-    auto n2 = new int(3);
-    tmp_tree.insert(*n2);
-    auto n3 = new int(4);
-    tmp_tree.insert(*n3);
-    auto n4 = new int(5);
-    tmp_tree.insert(*n4);
-    //tmp_tree.remove(3);
-    auto n5 = new int(6);
-    tmp_tree.insert(*n5);
-    auto sum = new int;
-    tmp_tree.SumHighest(5, sum);
-    printf("hello world");
+    auto tmp = UnionFind<int>(10);
+    auto ptr = new int*;
+    tmp.Find(2, ptr);
+    **ptr = 5;
+    tmp.Find(3, ptr);
+    **ptr = 2;
+    tmp.Union(1,2);
+    tmp.Union(2,3);
+    auto ptr2 = new int*;
+    tmp.Find(1, ptr2);
     return 0;
 }
