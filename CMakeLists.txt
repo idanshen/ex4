@@ -3,4 +3,4 @@ project(ex2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ex2 main.cpp SearchTree.h AVLTree.h generic_node.h StatusType.h RankTree.h UnionFind.h)
+add_executable(ex2 main.cpp SearchTree.h AVLTree.h generic_node.h StatusType.h RankTree.h UnionFind.h HashTable.h HashTable.cpp)
