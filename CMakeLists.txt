@@ -3,4 +3,12 @@ project(ex2)
 
 set(CMAKE_CXX_STANDARD 14)
 
+<<<<<<< Updated upstream
 add_executable(ex2 main.cpp SearchTree.h AVLTree.h generic_node.h StatusType.h RankTree.h UnionFind.h HashTable.h HashTable.cpp)
+=======
+
+add_executable(ex2 main.cpp SearchTree.h AVLTree.h generic_node.h
+        StatusType.h RankTree.h HashTable.h HashTable.cpp DataCenter.cpp DataCenter.h)
+
+
+>>>>>>> Stashed changes
