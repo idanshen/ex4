@@ -16,6 +16,8 @@ public:
     explicit DataCenterManager(int n);
     ~DataCenterManager() = default;
     StatusType AddServer(int dataCenterID, int serverID);
+    StatusType SetTraffic(int serverID, int traffic);
+
 };
 
 

@@ -5,7 +5,7 @@
 #include "HashTable.h"
 using std::bad_alloc;
 
-Server::Server(int ID, int DataCenterID):ID(ID),DataCenterID(DataCenterID){
+Server::Server(int ID, int DataCenterID):ID(ID),DataCenterID(DataCenterID), traffic(0){
     next_s=nullptr;
     prev_s= nullptr;
 }
