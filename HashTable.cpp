@@ -115,7 +115,7 @@ LinkedList::~LinkedList() {
 HashTable::HashTable(int array_size):array_size(array_size),num_of_servers(0){
     dynamic_arr= new LinkedList* [array_size];
     for (int i=0;i<array_size;i++){
-        dynamic_arr= nullptr;
+        dynamic_arr[i]=nullptr;
     }
 }
 
@@ -197,6 +197,9 @@ StatusType HashTable::Delete(int serverID) {
 
 Server* HashTable::Search(int serverID) {
     int index=HashFunc(serverID);
+    if(!dynamic_arr[index]){
+        return nullptr;
+    }
     LinkedList* lst=dynamic_arr[index];
     Server* s=lst->find_server(serverID);
     return s;
