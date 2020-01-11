@@ -16,6 +16,7 @@ class AVLTree : public SearchTree<K>{
     void free_postorder_rec(generic_node<K> *curr_node);
     public:
     AVLTree<K>();
+    AVLTree(int n);
     ~AVLTree<K>();
     StatusType insert(K& data) override;
     StatusType insert(K& data, generic_node<K> **ptr_to_node);
@@ -27,6 +28,11 @@ class AVLTree : public SearchTree<K>{
 template <class K>
 AVLTree<K>::AVLTree() : SearchTree<K>() {}
 
+
+template <class K>
+AVLTree<K>::AVLTree(int n) : SearchTree<K>() {
+
+}
 /// destructor for AVLTree, calls recursive removal of all nodes.
 template <class K>
 AVLTree<K>::~AVLTree(){

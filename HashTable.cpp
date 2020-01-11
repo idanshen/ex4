@@ -85,6 +85,17 @@ StatusType LinkedList::remove_server(int ServerID){
     }
     return FAILURE;
 }
+
+Server* LinkedList::find_server(int ServerID) {
+    Server* current=head;
+    while(head){
+        if(current->getID()==ServerID){
+            return current;
+        }
+        current=current->getNext();
+    }
+    return nullptr;
+}
 Server* LinkedList::getHead() {
     return head;
 }
@@ -182,6 +193,12 @@ StatusType HashTable::Delete(int serverID) {
     return res;
 }
 
-StatusType HashTable::Search(int serverID) {
+Server* HashTable::Search(int serverID) {
+    int index=HashFunc(serverID);
+    LinkedList* lst=dynamic_arr[index];
+    Server* s=lst->find_server(serverID);
+    return s;
+
+
 
 }

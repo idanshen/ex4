@@ -33,6 +33,7 @@ public:
     ~LinkedList();
     StatusType add_server(int ServerID,int DataCenterID);
     StatusType remove_server(int ServerID);
+    Server* find_server(int ServerID);
     Server* getHead();
 
 };
@@ -50,7 +51,7 @@ public:
     ~HashTable()=default;
     StatusType Insert(int serverID, int DataCenterID);
     StatusType Delete(int serverID);
-    StatusType Search(int serverID);
+    Server* Search(int serverID);
 
 
 };
