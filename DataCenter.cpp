@@ -50,6 +50,10 @@ StatusType DataCenter::add_server(int ServerID,int traffic) {
 }
 
 StatusType DataCenter::remove_server(int ServerID) {
+<<<<<<< Updated upstream
+=======
+    traffic_tree->find();
+>>>>>>> Stashed changes
     StatusType res=traffic_tree->remove(ServerID);
     return res;
 }
