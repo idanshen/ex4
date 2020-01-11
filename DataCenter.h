@@ -22,6 +22,7 @@ public:
     int operator*();
     int getID();
     int get_traffic();
+    void set_traffic(int t);
 };
 /*
 class DataCenter{

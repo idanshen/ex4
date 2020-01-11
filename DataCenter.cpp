@@ -12,9 +12,8 @@ bool ServerData::operator<(ServerData &s) {
     return this->traffic<s.traffic;
 }
 bool ServerData::operator==(ServerData &s) {
-    return this->traffic==s.traffic;
+    return (this->traffic==s.traffic)&(this->ServerID==s.ServerID);
 }
-
 
 int ServerData::operator*() {
     return traffic;
@@ -31,6 +30,8 @@ int ServerData::get_traffic() {
 int operator+(const int n, const ServerData &sd){
     return n + sd.traffic;
 }
+
+void ServerData::set_traffic(int t) {traffic = t;}
 /*
 DataCenter::DataCenter(int ID): ID(ID),NumOfServers(0) {
     auto *traffic_tree=new RankTree<ServerData>();

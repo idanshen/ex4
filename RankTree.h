@@ -94,11 +94,11 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
     }
     else {
         *sum = 0;
-        generic_node<int> *node;
+        generic_node<K> *node;
         this->find_by_index(this->tree_size-k, &node);
         if (node->right_son != NULL) *sum += node->right_son->subtree_sum;
         while (node!=this->root){
-            if (node->father->left_son==node) *sum += *(node->father->data) + node->father->right_son->subtree_sum;
+            if (node->father->left_son==node) *sum += node->father->right_son->subtree_sum + *(node->father->data);
             node = node->father;
         }
         return SUCCESS;
