@@ -50,8 +50,6 @@ public:
     StatusType Insert(int serverID, int DataCenterID);
     StatusType Delete(int serverID);
     Server* Search(int serverID);
-
-
 };
 
 

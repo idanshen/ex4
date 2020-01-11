@@ -200,7 +200,4 @@ Server* HashTable::Search(int serverID) {
     LinkedList* lst=dynamic_arr[index];
     Server* s=lst->find_server(serverID);
     return s;
-
-
-
 }

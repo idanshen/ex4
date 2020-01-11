@@ -1,9 +1,9 @@
 #ifndef EX2_UNIONFIND_H
 #define EX2_UNIONFIND_H
 
+#include <new>
 #include "StatusType.h"
 using std::bad_alloc;
-
 
 template <class K>
 class UnionFind {

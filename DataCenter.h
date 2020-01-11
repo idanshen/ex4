@@ -8,31 +8,31 @@
 #include "StatusType.h"
 #include "RankTree.h"
 
-class ServerNode{
+class ServerData{
     int ServerID;
     int traffic;
 public:
-    ServerNode(int ServerID,int traffic);
-    ~ServerNode()=default;
-    bool operator<(ServerNode& s);
-    bool operator==(ServerNode& s);
+    ServerData(): ServerID(0), traffic(0) {};
+    ServerData(int ServerID,int traffic);
+    ~ServerData()=default;
+    bool operator<(ServerData& s);
+    bool operator==(ServerData& s);
+    friend int operator+(const int n, const ServerData &sd);
+    bool operator!() { return (ServerID==0);};
     int operator*();
     int getID();
     int get_traffic();
-
-
 };
+/*
 class DataCenter{
-    RankTree<ServerNode>* traffic_tree;
+    RankTree<ServerData>* traffic_tree;
     int ID;
     int NumOfServers;
 public:
-    DataCenter(int ID);
+    explicit DataCenter(int ID);
     ~DataCenter()=default;
     StatusType add_server(int ServerID,int traffic);
     StatusType remove_server(int ServerID);
-
-
-
 };
+*/
 #endif //EX2_DATACENTER_H

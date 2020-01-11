@@ -3,39 +3,43 @@
 //
 
 #include "DataCenter.h"
-ServerNode::ServerNode(int ServerID, int traffic):ServerID(ServerID),traffic(traffic){}
+ServerData::ServerData(int ServerID, int traffic):ServerID(ServerID),traffic(traffic){}
 
-bool ServerNode::operator<(ServerNode &s) {
+bool ServerData::operator<(ServerData &s) {
     if(this->traffic==s.traffic){
         return this->ServerID<s.ServerID;
     }
     return this->traffic<s.traffic;
 }
-bool ServerNode::operator==(ServerNode &s) {
+bool ServerData::operator==(ServerData &s) {
     return this->traffic==s.traffic;
 }
 
 
-int ServerNode::operator*() {
+int ServerData::operator*() {
     return traffic;
 }
 
-int ServerNode::getID() {
+int ServerData::getID() {
     return ServerID;
 }
 
-int ServerNode::get_traffic() {
+int ServerData::get_traffic() {
     return traffic;
 }
 
+int operator+(const int n, const ServerData &sd){
+    return n + sd.traffic;
+}
+/*
 DataCenter::DataCenter(int ID): ID(ID),NumOfServers(0) {
-    auto *traffic_tree=new RankTree<ServerNode>();
+    auto *traffic_tree=new RankTree<ServerData>();
 }
 
 StatusType DataCenter::add_server(int ServerID,int traffic) {
-    ServerNode* new_s;
+    ServerData* new_s;
     try{
-        new_s= new ServerNode(ServerID,traffic);
+        new_s= new ServerData(ServerID,traffic);
     }
     catch(bad_alloc& b){
         return ALLOCATION_ERROR;
@@ -44,11 +48,12 @@ StatusType DataCenter::add_server(int ServerID,int traffic) {
     StatusType res=traffic_tree->insert(*new_s);
     return res;
 }
+
 StatusType DataCenter::remove_server(int ServerID) {
-    traffic_tree->find()
     StatusType res=traffic_tree->remove(ServerID);
     return res;
 }
+*/
 
 
 
