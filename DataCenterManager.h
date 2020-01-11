@@ -5,7 +5,7 @@
 #include "UnionFind.h"
 #include "RankTree.h"
 #include "StatusType.h"
-#include "DataCenter.h"
+#include "ServerData.h"
 
 class DataCenterManager {
     UnionFind<RankTree<ServerData>> dc_unionfind;
