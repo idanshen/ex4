@@ -29,10 +29,15 @@ class AVLTree : public SearchTree<K>{
 template <class K>
 AVLTree<K>::AVLTree() : SearchTree<K>() {}
 
+
+///recursively build a tree with empty nodes
 template <class K>
 StatusType AVLTree<K>::build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves){
     if(height==levels){
         *leaves-=1;
+        return SUCCESS;
+    }
+    if(height==levels-1 && *leaves==0){
         return SUCCESS;
     }
     generic_node<K>* new_node;
@@ -43,13 +48,26 @@ StatusType AVLTree<K>::build_empty_tree(generic_node<K>* node,int levels,int hei
         return ALLOCATION_ERROR;
     }
     if(!node->left_son){
-        if(height==levels)
         node->left_son=new_node;
-
-
-        build_empty_tree(new_node,levels,leaves);
-
+        build_empty_tree(new_node,levels,height+1,leaves);
     }
+    if(height==levels-1 && *leaves==0){
+        return SUCCESS;
+    }
+    generic_node<K>* second_new_node;
+    try{
+        second_new_node = new generic_node<K>(nullptr);
+    }
+    catch(bad_alloc &b){
+        return ALLOCATION_ERROR;
+    }
+    if(!node->right_son){
+        node->right_son=second_new_node;
+        build_empty_tree(second_new_node,levels,height+1,leaves);
+    }
+
+    return SUCCESS;
+
 
 
 }
@@ -64,7 +82,7 @@ AVLTree<K>::AVLTree(int n) : SearchTree<K>() {
         counter++;
     }
     counter+=1;
-    int leaves=n-2^(counter-1);
+    int leaves=n-(2^(counter-1)-1);
     try{
         new_node = new generic_node<K>(nullptr);
         this->root=new_node;
@@ -72,10 +90,6 @@ AVLTree<K>::AVLTree(int n) : SearchTree<K>() {
     catch(bad_alloc &b){}
     int height=1;
     build_empty_tree(this->root,counter,height,&leaves);
-
-
-
-
 
 }
 /// destructor for AVLTree, calls recursive removal of all nodes.

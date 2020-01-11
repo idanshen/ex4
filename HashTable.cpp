@@ -169,6 +169,7 @@ StatusType HashTable::Insert(int serverID, int DataCenterID) {
             return ALLOCATION_ERROR;
         }
         res=new_l->add_server(serverID,DataCenterID);
+        dynamic_arr[index]=new_l;
     }
     if(res!=SUCCESS){
         return res;
