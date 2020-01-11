@@ -57,6 +57,7 @@ StatusType LinkedList::add_server(int ServerID,int DataCenterID) {
     }
     return SUCCESS;
 }
+
 StatusType LinkedList::remove_server(int ServerID){
     Server* current=head;
     while(current){
@@ -99,6 +100,7 @@ Server* LinkedList::find_server(int ServerID) {
 Server* LinkedList::getHead() {
     return head;
 }
+
 LinkedList::~LinkedList() {
     Server* current=head;
     Server* next=head;

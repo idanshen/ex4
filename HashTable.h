@@ -44,8 +44,6 @@ class HashTable{
     int num_of_servers;
     int HashFunc(int serverID);
     StatusType resize_table(int new_size);
-
-
 public:
     explicit HashTable(int array_size);
     ~HashTable()=default;
