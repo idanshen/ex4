@@ -63,8 +63,13 @@ StatusType LinkedList::remove_server(int ServerID){
     while(current){
         if(current->getID()==ServerID){
             if(!(current->getPrev())){
-                head=current->getNext();
-                head->setPrev(nullptr);
+                if(!current->getNext()){
+                    head= nullptr;
+                }
+                else {
+                    head = current->getNext();
+                    head->setPrev(nullptr);
+                }
                 delete current;
             }
             else if(!(current->getNext())){
