@@ -19,7 +19,7 @@ public:
     StatusType SumHighest(int k, int *sum) const;
     StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
     StatusType fill_empty_tree(K** arr1,K** arr2);
-    template<class S> friend RankTree<S> operator+(const RankTree<S> &t1, const RankTree<S> &t2);
+    template<class S> friend RankTree<S> operator+(RankTree<S> &t1, RankTree<S> &t2);
 
 };
 template <class K>
@@ -76,8 +76,13 @@ RankTree<K>::RankTree(int n) : AVLTree<K>() {
         num/=2;
         counter++;
     }
-    counter+=1;
-    int leaves=n-(2^(counter-1)-1);
+    //counter+=1;
+    int interior_nodes=1;
+    for(int i=0;i<counter-1;i++){
+        interior_nodes*=2;
+
+    }
+    int leaves=n-(interior_nodes-1);
     try{
         new_node = new generic_node<K>(nullptr);
         this->root=new_node;
@@ -111,22 +116,23 @@ StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** a
         update_height(node);
         return SUCCESS;
     }
-    fill_empty_tree_rec(node->left_son,arr1,arr2);
-    if(*arr1 == nullptr){
-        node->data=*arr2;
+    if(node->left_son) {
+        fill_empty_tree_rec(node->left_son, arr1, arr2);
+        if (*arr1 == nullptr) {
+            node->data = *arr2;
+        } else if (*arr2 == nullptr) {
+            node->data = *arr1;
+        } else if (*arr1 < *arr2) {
+            node->data = *arr1;
+            arr1++;
+        } else {
+            node->data = *arr2;
+            arr2++;
+        }
     }
-    else if(*arr2 == nullptr){
-        node->data=*arr1;
+    if(node->right_son) {
+        fill_empty_tree_rec(node->right_son, arr1, arr2);
     }
-    else if(*arr1<*arr2){
-        node->data=*arr1;
-        arr1++;
-    }
-    else{
-        node->data=*arr2;
-        arr2++;
-    }
-    fill_empty_tree_rec(node->right_son,arr1,arr2);
     update_height(node);
     return SUCCESS;
 
@@ -233,7 +239,7 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
 }
 
 template <class K>
-RankTree<K> operator+(const RankTree<K> &tree1, const RankTree<K> &tree2){
+RankTree<K> operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     int size1=tree1.get_tree_size();
     int size2=tree2.get_tree_size();
     K** arr1;

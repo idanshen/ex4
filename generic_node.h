@@ -14,7 +14,13 @@ public:
     int subtree_size;
     int subtree_sum;
     generic_node<K>(K* data) : data(data), height(0), left_son(NULL), right_son(NULL), father(NULL), subtree_size(1){
-        subtree_sum = 0+ *data;
+        if(!data){
+            subtree_sum=0;
+
+        }
+        else {
+            subtree_sum = 0 + *data;
+        }
     };
     generic_node<K>() : height(0), left_son(NULL), right_son(NULL), father(NULL), subtree_size(1), subtree_sum(0) {data= nullptr;}
     ~generic_node() {
