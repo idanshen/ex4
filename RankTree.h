@@ -19,7 +19,11 @@ public:
     StatusType SumHighest(int k, int *sum) const;
     StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
     StatusType fill_empty_tree(K** arr1,K** arr2);
+<<<<<<< Updated upstream
     template<class S> friend RankTree<S> operator+(const RankTree<S> &t1, const RankTree<S> &t2);
+=======
+    template<class K> friend RankTree<K>* operator+(RankTree<K>* tree1,RankTree<K>* tree2);
+>>>>>>> Stashed changes
 
 };
 template <class K>
@@ -229,9 +233,15 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
 }
 
 template <class K>
+<<<<<<< Updated upstream
 RankTree<K> operator+(const RankTree<K> &tree1, const RankTree<K> &tree2){
     int size1=tree1.get_tree_size();
     int size2=tree2.get_tree_size();
+=======
+RankTree<K>* operator+(RankTree<K>& tree1, RankTree<K>& tree2){
+    int size1=tree1->get_tree_size();
+    int size2=tree2->get_tree_size();
+>>>>>>> Stashed changes
     K** arr1;
     K** arr2;
     RankTree<K>* new_tree;
@@ -245,9 +255,15 @@ RankTree<K> operator+(const RankTree<K> &tree1, const RankTree<K> &tree2){
     tree1.to_array_inorder(arr1);
     tree2.to_array_inorder(arr2);
     new_tree->fill_empty_tree(arr1,arr2);
+<<<<<<< Updated upstream
     delete &tree1;
     delete &tree2; //TODO:?????
     return *new_tree;
+=======
+    delete tree1;
+    delete tree2;
+    return new_tree;
+>>>>>>> Stashed changes
 
 
 }
