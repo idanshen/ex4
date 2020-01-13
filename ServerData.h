@@ -10,6 +10,7 @@ class ServerData{
 public:
     ServerData(): ServerID(0), traffic(0) {};
     ServerData(int ServerID,int traffic);
+    ServerData(const ServerData& s)=default;
     ~ServerData()=default;
     bool operator<(ServerData& s);
     bool operator==(ServerData& s);

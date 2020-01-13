@@ -2,6 +2,7 @@
 
 DataCenterManager::DataCenterManager(int n) : size(n), dc_hashtable(HashTable(n)), dc_unionfind(UnionFind<RankTree<ServerData>>(n)) {
     main_tree = RankTree<ServerData>();
+
 }
 
 StatusType DataCenterManager::AddServer(int dataCenterID, int serverID) {
@@ -93,6 +94,14 @@ StatusType DataCenterManager::RemoveServer(int serverID) {
     }
 }
 
+StatusType DataCenterManager::MergeDataCenters(int dataCenter1, int dataCenter2){
+    if(dataCenter1<=0 || dataCenter1>size || dataCenter2<=0 || dataCenter2>size){
+        return INVALID_INPUT;
+    }
+    StatusType res=this->dc_unionfind.Union(dataCenter1,dataCenter2);
+    return res;
+
+}
 StatusType DataCenterManager::SumHighestTrafficServers(int dataCenterID, int k, int *traffic) {
     if ((dataCenterID>this->size)||(dataCenterID<0)||(k<0)||(traffic==NULL)) return INVALID_INPUT;
     if (dataCenterID==0) {

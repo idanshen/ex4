@@ -19,6 +19,7 @@ public:
     StatusType SetTraffic(int serverID, int traffic);
     StatusType RemoveServer(int serverID);
     StatusType SumHighestTrafficServers(int dataCenterID, int k, int *traffic);
+    StatusType MergeDataCenters(int dataCenter1, int dataCenter2);
 };
 
 

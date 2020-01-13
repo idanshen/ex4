@@ -1,7 +1,6 @@
 #include "ServerData.h"
 
 ServerData::ServerData(int ServerID, int traffic):ServerID(ServerID),traffic(traffic){}
-
 bool ServerData::operator<(ServerData &s) {
     if(this->traffic==s.traffic){
         return this->ServerID<s.ServerID;

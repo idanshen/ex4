@@ -16,13 +16,11 @@ class AVLTree : public SearchTree<K>{
     void free_postorder_rec(generic_node<K> *curr_node);
     public:
     AVLTree<K>();
-    AVLTree(int n);
     ~AVLTree<K>();
     StatusType insert(K& data) override;
     StatusType insert(K& data, generic_node<K> **ptr_to_node);
     StatusType remove(K data) override;
     StatusType remove_node(generic_node<K> *last_node, bool keep_avl_struct=true);
-    StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
 };
 
 /// constructor for empty tree
@@ -30,68 +28,6 @@ template <class K>
 AVLTree<K>::AVLTree() : SearchTree<K>() {}
 
 
-///recursively build a tree with empty nodes
-template <class K>
-StatusType AVLTree<K>::build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves){
-    if(height==levels){
-        *leaves-=1;
-        return SUCCESS;
-    }
-    if(height==levels-1 && *leaves==0){
-        return SUCCESS;
-    }
-    generic_node<K>* new_node;
-    try{
-        new_node = new generic_node<K>(nullptr);
-    }
-    catch(bad_alloc &b){
-        return ALLOCATION_ERROR;
-    }
-    if(!node->left_son){
-        node->left_son=new_node;
-        build_empty_tree(new_node,levels,height+1,leaves);
-    }
-    if(height==levels-1 && *leaves==0){
-        return SUCCESS;
-    }
-    generic_node<K>* second_new_node;
-    try{
-        second_new_node = new generic_node<K>(nullptr);
-    }
-    catch(bad_alloc &b){
-        return ALLOCATION_ERROR;
-    }
-    if(!node->right_son){
-        node->right_son=second_new_node;
-        build_empty_tree(second_new_node,levels,height+1,leaves);
-    }
-
-    return SUCCESS;
-
-
-
-}
-/// creates an empty tree with n nodes
-template <class K>
-AVLTree<K>::AVLTree(int n) : SearchTree<K>() {
-    int counter=0;
-    int num=n;
-    generic_node<K>* new_node;
-    while(num>0){
-        num/=2;
-        counter++;
-    }
-    counter+=1;
-    int leaves=n-(2^(counter-1)-1);
-    try{
-        new_node = new generic_node<K>(nullptr);
-        this->root=new_node;
-    }
-    catch(bad_alloc &b){}
-    int height=1;
-    build_empty_tree(this->root,counter,height,&leaves);
-
-}
 /// destructor for AVLTree, calls recursive removal of all nodes.
 template <class K>
 AVLTree<K>::~AVLTree(){
