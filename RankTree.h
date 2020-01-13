@@ -10,6 +10,7 @@
 template <class K>
 class RankTree : public AVLTree<K>{
     void update_height(generic_node<K> *node);
+    void update_height_not_rec(generic_node<K> *node);
     StatusType find_by_index_rec(int idx, generic_node<K> **ptr_to_node) const;
     StatusType fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2);
 public:
@@ -19,7 +20,7 @@ public:
     StatusType SumHighest(int k, int *sum) const;
     StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
     StatusType fill_empty_tree(K** arr1,K** arr2);
-    template<class S> friend RankTree<S> operator+(RankTree<S> &t1, RankTree<S> &t2);
+    template<class S> friend RankTree<S>* operator+(RankTree<S>& t1, RankTree<S>& t2);
 
 };
 template <class K>
@@ -44,6 +45,7 @@ StatusType RankTree<K>::build_empty_tree(generic_node<K>* node,int levels,int he
     }
     if(!node->left_son){
         node->left_son=new_node;
+        new_node->father=node;
         build_empty_tree(new_node,levels,height+1,leaves);
     }
     if(height==levels-1 && *leaves==0){
@@ -57,6 +59,7 @@ StatusType RankTree<K>::build_empty_tree(generic_node<K>* node,int levels,int he
         return ALLOCATION_ERROR;
     }
     if(!node->right_son){
+        second_new_node->father=node;
         node->right_son=second_new_node;
         build_empty_tree(second_new_node,levels,height+1,leaves);
     }
@@ -100,40 +103,44 @@ StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** a
     }
     if(!node->left_son && !node->right_son){
         if(*arr1 == nullptr){
-            node->data=*arr2;
+            *(node->data)=**arr2;
+            arr2++;
         }
         else if(*arr2 == nullptr){
-            node->data=*arr1;
+            *(node->data)=**arr1;
+            arr1++;
         }
-        else if(*arr1<*arr2){
-            node->data=*arr1;
+        else if(**arr1<**arr2){
+            *(node->data)=**arr1;
             arr1++;
         }
         else{
-            node->data=*arr2;
+            *(node->data)=**arr2;
             arr2++;
         }
-        update_height(node);
+        update_height_not_rec(node);
         return SUCCESS;
     }
     if(node->left_son) {
         fill_empty_tree_rec(node->left_son, arr1, arr2);
         if (*arr1 == nullptr) {
-            node->data = *arr2;
+            *(node->data)=**arr2;
+            arr2++;
         } else if (*arr2 == nullptr) {
-            node->data = *arr1;
+            *(node->data)=**arr1;
+            arr1++;
         } else if (*arr1 < *arr2) {
-            node->data = *arr1;
+            *(node->data)=**arr1;
             arr1++;
         } else {
-            node->data = *arr2;
+            *(node->data)=**arr2;
             arr2++;
         }
     }
     if(node->right_son) {
         fill_empty_tree_rec(node->right_son, arr1, arr2);
     }
-    update_height(node);
+    update_height_not_rec(node);
     return SUCCESS;
 
 }
@@ -174,7 +181,29 @@ void RankTree<K>::update_height(generic_node<K> *node) {
         if (node!=this->root) update_height(node->father);
     }
 }
+template <class K>
+void RankTree<K>::update_height_not_rec(generic_node<K> *node) {
+    if (node != NULL) {
+        if ((node->left_son == NULL) && (node->right_son == NULL)) {
+            node->height = 0;
+            node->subtree_size = 1;
+            node->subtree_sum = 0 + *(node->data);
+        } else if (node->left_son == NULL) {
+            node->height = node->right_son->height + 1;
+            node->subtree_size = node->right_son->subtree_size + 1;
+            node->subtree_sum = node->right_son->subtree_sum + *(node->data);
+        } else if (node->right_son == NULL) {
+            node->height = node->left_son->height + 1;
+            node->subtree_size = node->left_son->subtree_size + 1;
+            node->subtree_sum = node->left_son->subtree_sum + *(node->data);
+        } else {
+            node->height = MAX(node->left_son->height, node->right_son->height) + 1;
+            node->subtree_size = node->left_son->subtree_size + node->right_son->subtree_size + 1;
+            node->subtree_sum = node->left_son->subtree_sum + node->right_son->subtree_sum + *(node->data);
+        }
 
+    }
+}
 template <class K>
 StatusType RankTree<K>::find_by_index(int idx, generic_node<K> **ptr_to_node) const{
     *ptr_to_node=this->root;
@@ -239,7 +268,7 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
 }
 
 template <class K>
-RankTree<K> operator+( RankTree<K> &tree1, RankTree<K> &tree2){
+RankTree<K>* operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     int size1=tree1.get_tree_size();
     int size2=tree2.get_tree_size();
 
@@ -256,6 +285,11 @@ RankTree<K> operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     tree2.to_array_inorder(&arr2);
     arr2 = arr2-size2;
     new_tree->fill_empty_tree(&arr1,&arr2);
-    return *new_tree;
+    free(arr1);
+    free(arr2);
+    //delete &tree1;
+    //delete &tree2;
+
+    return new_tree;
 }
 #endif //EX2_RANKTREE_H
