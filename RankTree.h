@@ -90,7 +90,7 @@ RankTree<K>::RankTree(int n) : AVLTree<K>() {
     catch(bad_alloc &b){}
     int height=1;
     build_empty_tree(this->root,counter,height,&leaves);
-
+    this->tree_size = n;
 }
 
 template <class K>
@@ -242,23 +242,20 @@ template <class K>
 RankTree<K> operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     int size1=tree1.get_tree_size();
     int size2=tree2.get_tree_size();
-    K** arr1;
-    K** arr2;
-    RankTree<K>* new_tree;
-    try{
-        arr1=new K*[size1];
-        arr2=new K*[size2];
-        new_tree = new RankTree<K>(size1 + size2);
 
+    auto arr1 = (K*)malloc(sizeof(K)*(size1));
+    auto arr2 = (K*)malloc(sizeof(K)*(size2));
+    if ((arr1==NULL)||(arr2==NULL)) {
+        free(arr1);
+        free(arr2);
+        throw std::bad_alloc();
     }
-    catch(bad_alloc &b){ throw b;}
-    tree1.to_array_inorder(arr1);
-    tree2.to_array_inorder(arr2);
-    new_tree->fill_empty_tree(arr1,arr2);
-
-    delete &tree1;
-    delete &tree2; //TODO:?????
+    auto new_tree = new RankTree<K>(size1 + size2);
+    tree1.to_array_inorder(&arr1);
+    arr1 = arr1-size1;
+    tree2.to_array_inorder(&arr2);
+    arr2 = arr2-size2;
+    new_tree->fill_empty_tree(&arr1,&arr2);
     return *new_tree;
-
 }
 #endif //EX2_RANKTREE_H
