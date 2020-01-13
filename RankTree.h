@@ -19,11 +19,12 @@ public:
     StatusType SumHighest(int k, int *sum) const;
     StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
     StatusType fill_empty_tree(K** arr1,K** arr2);
-    friend RankTree<K> operator+(const RankTree<K> &t1, const RankTree<K> &t2);
+    template<class S> friend RankTree<S> operator+(const RankTree<S> &t1, const RankTree<S> &t2);
 
 };
 template <class K>
 RankTree<K>::RankTree():AVLTree<K>() {}
+
 ///recursively build a tree with empty nodes
 template <class K>
 StatusType RankTree<K>::build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves){
@@ -229,8 +230,8 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
 
 template <class K>
 RankTree<K> operator+(const RankTree<K> &tree1, const RankTree<K> &tree2){
-    int size1=tree1->get_tree_size();
-    int size2=tree2->get_tree_size();
+    int size1=tree1.get_tree_size();
+    int size2=tree2.get_tree_size();
     K** arr1;
     K** arr2;
     RankTree<K>* new_tree;
@@ -240,13 +241,13 @@ RankTree<K> operator+(const RankTree<K> &tree1, const RankTree<K> &tree2){
         new_tree = new RankTree<K>(size1 + size2);
 
     }
-    catch(bad_alloc &b){ return ALLOCATION_ERROR;}
-    tree1->to_array_inorder(arr1);
-    tree2->to_array_inorder(arr2);
+    catch(bad_alloc &b){ throw b;}
+    tree1.to_array_inorder(arr1);
+    tree2.to_array_inorder(arr2);
     new_tree->fill_empty_tree(arr1,arr2);
-    delete tree1;
-    delete tree2; //TODO:?????
-    return new_tree;
+    delete &tree1;
+    delete &tree2; //TODO:?????
+    return *new_tree;
 
 
 }

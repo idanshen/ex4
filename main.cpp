@@ -13,6 +13,7 @@ int main() {
     tmp.SetTraffic(3,1);
     tmp.SetTraffic(4,2);
 
+    tmp.RemoveServer(1);
     auto sum = new int;
     tmp.SumHighestTrafficServers(0,2,sum);
     std::printf("%d", *sum);

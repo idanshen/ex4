@@ -47,13 +47,13 @@ StatusType UnionFind<K>::Union(int p, int q) {
         size_of_group[p] += size_of_group[q];
         size_of_group[q] = 0;
         pointers[p] = pointers[p]+pointers[q];
-        pointers[q] = NULL;
+        //pointers[q] = NULL;
         parent[q] = p;
     } else {
         size_of_group[q] += size_of_group[p];
         size_of_group[p] = 0;
         pointers[q] = pointers[p]+pointers[q];
-        pointers[p] = NULL;
+        //pointers[p] = NULL;
         parent[p] = q;
     }
     return SUCCESS;
