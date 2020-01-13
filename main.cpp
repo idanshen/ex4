@@ -14,8 +14,10 @@ int main() {
     tmp.SetTraffic(4,2);
 
     tmp.RemoveServer(1);
+
+    tmp.MergeDataCenters(3,4);
     auto sum = new int;
-    tmp.SumHighestTrafficServers(0,2,sum);
+    tmp.SumHighestTrafficServers(3,5,sum);
     std::printf("%d", *sum);
     return 0;
 }
