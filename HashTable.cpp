@@ -9,6 +9,10 @@ Server::Server(int ID, int DataCenterID):ID(ID),DataCenterID(DataCenterID), traf
     next_s=nullptr;
     prev_s= nullptr;
 }
+Server::Server(int ID,int DataCenterID,int traffic):ID(ID),DataCenterID(DataCenterID), traffic(traffic){
+    next_s= nullptr;
+    prev_s= nullptr;
+}
 
 int Server::getID() {return ID;}
 
@@ -29,7 +33,7 @@ void Server::setPrev(Server *s) {prev_s=s;}
 
 LinkedList::LinkedList():head(nullptr),last_node(nullptr){}
 
-StatusType LinkedList::add_server(int ServerID,int DataCenterID) {
+StatusType LinkedList::add_server(int ServerID,int DataCenterID,int traffic) {
     Server* new_s= nullptr;
     Server* current=head;
     while(current){
@@ -39,7 +43,7 @@ StatusType LinkedList::add_server(int ServerID,int DataCenterID) {
         current=current->getNext();
     }
     try {
-        new_s = new Server(ServerID, DataCenterID);
+        new_s = new Server(ServerID, DataCenterID,traffic);
     }
     catch(bad_alloc& b){
         return ALLOCATION_ERROR;
@@ -147,7 +151,8 @@ StatusType HashTable::resize_table(int new_size) {
             while(current){
                 int serverID=current->getID();
                 int DataCenterID=current->getDataCenterID();
-                Insert(serverID,DataCenterID); //TODO: what if it fails for bad alloc
+                int Traffic=current->GetTraffic();
+                Insert(serverID,DataCenterID,Traffic); //TODO: what if it fails for bad alloc
                 current=current->getNext();
             }
 
@@ -158,12 +163,12 @@ StatusType HashTable::resize_table(int new_size) {
     return SUCCESS;
 
 }
-StatusType HashTable::Insert(int serverID, int DataCenterID) {
+StatusType HashTable::Insert(int serverID, int DataCenterID,int traffic) {
     int index=HashFunc(serverID);
     LinkedList* current=dynamic_arr[index];
     StatusType res;
     if(current){
-        res=current->add_server(serverID,DataCenterID);
+        res=current->add_server(serverID,DataCenterID,traffic);
     }
     else{
         LinkedList *new_l;
@@ -173,7 +178,7 @@ StatusType HashTable::Insert(int serverID, int DataCenterID) {
         catch(bad_alloc &b){
             return ALLOCATION_ERROR;
         }
-        res=new_l->add_server(serverID,DataCenterID);
+        res=new_l->add_server(serverID,DataCenterID,traffic);
         dynamic_arr[index]=new_l;
     }
     if(res!=SUCCESS){
