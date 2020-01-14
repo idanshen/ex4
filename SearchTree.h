@@ -12,7 +12,8 @@ using std::bad_alloc;
 //-------------------defines section----------------------
 #define MAX(a, b) ((a > b) ? a : b)
 
-#include "StatusType.h"
+//#include "StatusType.h"
+#include "library2.h"
 #include "generic_node.h"
 //--------------------------------------------------------
 

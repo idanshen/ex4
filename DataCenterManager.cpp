@@ -45,8 +45,10 @@ StatusType DataCenterManager::SetTraffic(int serverID, int traffic) {
             dc_unionfind.Find(res->getDataCenterID(),&tree);
             tree->find(*for_search,&node);
             node->data->set_traffic(traffic);
+            tree->update_height(node);
             main_tree.find(*for_search,&node);
             node->data->set_traffic(traffic);
+            main_tree.update_height(node);
             delete(for_search);
             return SUCCESS;
         }

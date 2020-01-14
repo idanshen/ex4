@@ -9,11 +9,11 @@
 
 template <class K>
 class RankTree : public AVLTree<K>{
-    void update_height(generic_node<K> *node);
     void update_height_not_rec(generic_node<K> *node);
     StatusType find_by_index_rec(int idx, generic_node<K> **ptr_to_node) const;
     StatusType fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2,int* ind1,int* ind2,int size1,int size2);
 public:
+    void update_height(generic_node<K> *node);
     RankTree<K>();
     explicit RankTree<K>(int n);
     StatusType find_by_index(int idx, generic_node<K> **ptr_to_node) const;
@@ -270,7 +270,13 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
         this->find_by_index(this->tree_size-k, &node);
         if (node->right_son != NULL) *sum += node->right_son->subtree_sum;
         while (node!=this->root){
-            if (node->father->left_son==node) *sum += node->father->right_son->subtree_sum + *(node->father->data);
+            if (node->father->left_son==node) {
+                if (node->father->right_son!=NULL) {
+                    *sum += node->father->right_son->subtree_sum + *(node->father->data);
+                } else {
+                    *sum = *sum + *(node->father->data);
+                }
+            }
             node = node->father;
         }
         return SUCCESS;

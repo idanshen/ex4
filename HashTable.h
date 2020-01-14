@@ -3,8 +3,8 @@
 //
 #ifndef MAIN_CPP_HASHTABLE_H
 #define MAIN_CPP_HASHTABLE_H
-#include "StatusType.h"
-
+//#include "StatusType.h"
+#include "library2.h"
 
 class Server{
     int ID;

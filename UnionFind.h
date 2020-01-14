@@ -2,7 +2,8 @@
 #define EX2_UNIONFIND_H
 
 #include <new>
-#include "StatusType.h"
+//#include "StatusType.h"
+#include "library2.h"
 using std::bad_alloc;
 
 template <class K>
@@ -52,8 +53,8 @@ StatusType UnionFind<K>::Union(int p, int q) {
         temp1=pointers[p];
         temp2=pointers[q];
         pointers[p] = *pointers[p]+*pointers[q];
-        delete temp1;
-        delete temp2;
+        //delete temp1;
+        //delete temp2;
         //pointers[q] = NULL;
         parent[q] = p;
     } else {
@@ -62,8 +63,8 @@ StatusType UnionFind<K>::Union(int p, int q) {
         temp1=pointers[p];
         temp2=pointers[q];
         pointers[q] = *pointers[p]+*pointers[q];
-        delete temp1;
-        delete temp2;
+        //delete temp1;
+        //delete temp2;
         //pointers[p] = NULL;
         parent[p] = q;
     }

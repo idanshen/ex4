@@ -139,13 +139,12 @@ StatusType AVLTree<K>::remove_node(generic_node<K> *last_node,
         generic_node<K> *father = last_node->father;
         if ((last_node->right_son == NULL) && (last_node->left_son == NULL)) {
             last_node->height--;
-            this->update_height(last_node->father);
             if (father->left_son == last_node) father->left_son = NULL;
             else if (father->right_son == last_node) father->right_son = NULL;
+            this->update_height(last_node->father);
             delete(last_node);
         } else if ((last_node->right_son==NULL) && (last_node->left_son!=NULL)){
             last_node->height--;
-            this->update_height(last_node->father);
             if (father->left_son == last_node) {
                 father->left_son = last_node->left_son;
                 last_node->left_son->father = father;
@@ -154,10 +153,10 @@ StatusType AVLTree<K>::remove_node(generic_node<K> *last_node,
                 father->right_son = last_node->left_son;
                 last_node->left_son->father = father;
             }
+            this->update_height(last_node->father);
             delete(last_node);
         } else if ((last_node->right_son!=NULL) && (last_node->left_son==NULL)){
             last_node->height--;
-            this->update_height(last_node->father);
             if (father->left_son == last_node) {
                 father->left_son = last_node->right_son;
                 last_node->right_son->father = father;
@@ -166,6 +165,7 @@ StatusType AVLTree<K>::remove_node(generic_node<K> *last_node,
                 father->right_son = last_node->right_son;
                 last_node->right_son->father = father;
             }
+            this->update_height(last_node->father);
             delete(last_node);
         } else {
             generic_node<K> *switch_node;

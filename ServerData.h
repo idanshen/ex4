@@ -1,7 +1,6 @@
 #ifndef EX2_DATACENTER_H
 #define EX2_DATACENTER_H
 
-#include "StatusType.h"
 #include "RankTree.h"
 
 class ServerData{
