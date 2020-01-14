@@ -14,6 +14,7 @@ class Server{
     Server* prev_s;
 public:
     Server(int ID,int DataCenterID);
+    Server(int ID,int DataCenterID,int traffic);
     ~Server()=default;
     int getID();
     int getDataCenterID();
@@ -31,7 +32,7 @@ class LinkedList{
 public:
     explicit LinkedList();
     ~LinkedList();
-    StatusType add_server(int ServerID,int DataCenterID);
+    StatusType add_server(int ServerID,int DataCenterID,int traffic=0);
     StatusType remove_server(int ServerID);
     Server* find_server(int ServerID);
     Server* getHead();
@@ -47,7 +48,7 @@ class HashTable{
 public:
     explicit HashTable(int array_size);
     ~HashTable()=default;
-    StatusType Insert(int serverID, int DataCenterID);
+    StatusType Insert(int serverID, int DataCenterID,int traffic=0);
     StatusType Delete(int serverID);
     Server* Search(int serverID);
 };
