@@ -192,6 +192,8 @@ int main() {
     s=SumHighestTrafficServers(*DS,4,12,&sum);
     assert(s==SUCCESS && sum==142);
 
+    s=SumHighestTrafficServers(*DS,40,10,&sum);
+
     for (int i=0;i<20;i++)
     {
         s=AddServer(*DS,20,400+i);
@@ -203,6 +205,8 @@ int main() {
         s=AddServer(*DS,50,700+i);
         s=SetTraffic(*DS,700+i,i+1);
     }
+    s=SumHighestTrafficServers(*DS,40,10,&sum);
+
     s=MergeDataCenters(*DS,20,30);
     s=MergeDataCenters(*DS,40,50);
     s=SumHighestTrafficServers(*DS,30,10,&sum);
@@ -230,7 +234,7 @@ int main() {
     s=SumHighestTrafficServers(*DS,20,8,&sum);
     assert(s==SUCCESS && sum==148);
 
-
+    s=SumHighestTrafficServers(*DS,40,10,&sum);
     for (int i=0;i<20;i++)
     {
         s=RemoveServer(*DS,600+i);

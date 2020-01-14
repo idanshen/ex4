@@ -256,12 +256,12 @@ StatusType RankTree<K>::SumHighest(int k, int *sum) const {
         *sum = 0;
         return SUCCESS;
     }
-    else if (k>=this->tree_size){
-        *sum = this->root->subtree_sum;
-        return SUCCESS;
-    }
     else if (this->tree_size==0){
         *sum = 0;
+        return SUCCESS;
+    }
+    else if (k>=this->tree_size){
+        *sum = this->root->subtree_sum;
         return SUCCESS;
     }
     else {

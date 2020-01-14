@@ -12,6 +12,7 @@ class UnionFind {
     int* parent;
     int* size_of_group;
     K** pointers;
+    int Find_root(int i);
 public:
     explicit UnionFind<K>(int size);
     ~UnionFind();
@@ -44,29 +45,31 @@ UnionFind<K>::~UnionFind() {
 
 template <class K>
 StatusType UnionFind<K>::Union(int p, int q) {
+    if ((p<=0)||(p>size)||(q<=0)||(q>size)) return INVALID_INPUT;
     K* temp1;
     K* temp2;
-    if ((p<=0)||(p>size)||(q<=0)||(q>size)) return INVALID_INPUT;
-    if (size_of_group[p]>size_of_group[q]){
-        size_of_group[p] += size_of_group[q];
-        size_of_group[q] = 0;
-        temp1=pointers[p];
-        temp2=pointers[q];
-        pointers[p] = *pointers[p]+*pointers[q];
+    int real_p = this->Find_root(p);
+    int real_q = this->Find_root(q);
+    if (size_of_group[real_p]>size_of_group[real_q]){
+        size_of_group[real_p] += size_of_group[real_q];
+        size_of_group[real_q] = 0;
+        temp1=pointers[real_p];
+        temp2=pointers[real_q];
+        pointers[real_p] = *pointers[real_p]+*pointers[real_q];
+        //pointers[q] = pointers[p];
         //delete temp1;
         //delete temp2;
-        //pointers[q] = NULL;
-        parent[q] = p;
+        parent[real_q] = real_p;
     } else {
-        size_of_group[q] += size_of_group[p];
-        size_of_group[p] = 0;
-        temp1=pointers[p];
-        temp2=pointers[q];
-        pointers[q] = *pointers[p]+*pointers[q];
+        size_of_group[real_q] += size_of_group[real_p];
+        size_of_group[real_p] = 0;
+        temp1=pointers[real_p];
+        temp2=pointers[real_q];
+        pointers[real_q] = *pointers[real_p]+*pointers[real_q];
+        //pointers[p] = pointers[q];
         //delete temp1;
         //delete temp2;
-        //pointers[p] = NULL;
-        parent[p] = q;
+        parent[real_p] = real_q;
     }
     return SUCCESS;
 }
@@ -79,12 +82,23 @@ StatusType UnionFind<K>::Find(int i, K **pointer_to_return) {
         curr = parent[curr];
     }
     int sec_curr = i;
-    while (parent[curr]!=curr){ //update all parents to be root
-        curr = parent[curr];
+    int tmp;
+    while (parent[sec_curr]!=sec_curr){ //update all parents to be root
+        tmp = parent[sec_curr];
+        parent[sec_curr] = curr;
+        sec_curr = tmp;
     }
     *pointer_to_return = pointers[curr];
     return SUCCESS;
 }
 
+template <class K>
+int  UnionFind<K>::Find_root(int i){
+    int curr = i;
+    while (parent[curr]!=curr){ //find the root
+        curr = parent[curr];
+    }
+    return curr;
+}
 
 #endif //EX2_UNIONFIND_H
