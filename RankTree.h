@@ -12,14 +12,14 @@ class RankTree : public AVLTree<K>{
     void update_height(generic_node<K> *node);
     void update_height_not_rec(generic_node<K> *node);
     StatusType find_by_index_rec(int idx, generic_node<K> **ptr_to_node) const;
-    StatusType fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2);
+    StatusType fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2,int* ind1,int* ind2,int size1,int size2);
 public:
     RankTree<K>();
     explicit RankTree<K>(int n);
     StatusType find_by_index(int idx, generic_node<K> **ptr_to_node) const;
     StatusType SumHighest(int k, int *sum) const;
     StatusType build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves);
-    StatusType fill_empty_tree(K** arr1,K** arr2);
+    StatusType fill_empty_tree(K** arr1,K** arr2,int size1,int size2);
     template<class S> friend RankTree<S>* operator+(RankTree<S>& t1, RankTree<S>& t2);
 
 };
@@ -97,59 +97,69 @@ RankTree<K>::RankTree(int n) : AVLTree<K>() {
 }
 
 template <class K>
-StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2){
-    if(!arr1 || !arr2){
+StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** arr2,
+        int* ind1,int* ind2,int size1,int size2){
+    if(!arr1 && !arr2){
+        return FAILURE;
+    }
+    if(*ind1>=size1 && *ind2>=size2){
         return FAILURE;
     }
     if(!node->left_son && !node->right_son){
-        if(*arr1 == nullptr){
+        if(*ind1>=size1){
             *(node->data)=**arr2;
-            arr2++;
+            *ind2+=1;
         }
-        else if(*arr2 == nullptr){
+        else if(*ind2>=size2){
             *(node->data)=**arr1;
-            arr1++;
+            *ind1+=1;
         }
         else if(**arr1<**arr2){
             *(node->data)=**arr1;
-            arr1++;
+            *ind1+=1;
         }
         else{
             *(node->data)=**arr2;
-            arr2++;
+            *ind2+=1;
         }
         update_height_not_rec(node);
         return SUCCESS;
     }
     if(node->left_son) {
-        fill_empty_tree_rec(node->left_son, arr1, arr2);
-        if (*arr1 == nullptr) {
-            *(node->data)=**arr2;
-            arr2++;
-        } else if (*arr2 == nullptr) {
-            *(node->data)=**arr1;
-            arr1++;
-        } else if (*arr1 < *arr2) {
-            *(node->data)=**arr1;
-            arr1++;
-        } else {
-            *(node->data)=**arr2;
-            arr2++;
-        }
+        fill_empty_tree_rec(node->left_son, arr1, arr2,ind1,ind2,size1,size2);
     }
+    if(*ind1>=size1){
+        *(node->data)=**arr2;
+        *ind2+=1;
+    }
+    else if(*ind2>=size2){
+        *(node->data)=**arr1;
+        *ind1+=1;
+    }
+    else if(**arr1<**arr2){
+        *(node->data)=**arr1;
+        *ind1+=1;
+    }
+    else{
+        *(node->data)=**arr2;
+        *ind2+=1;
+    }
+
     if(node->right_son) {
-        fill_empty_tree_rec(node->right_son, arr1, arr2);
+        fill_empty_tree_rec(node->right_son, arr1, arr2,ind1,ind2,size1,size2);
     }
     update_height_not_rec(node);
     return SUCCESS;
 
 }
 template <class K>
-StatusType RankTree<K>::fill_empty_tree(K** arr1,K** arr2){
+StatusType RankTree<K>::fill_empty_tree(K** arr1,K** arr2,int size1,int size2){
     if(this->root== nullptr){
         return FAILURE;
     }
-    return fill_empty_tree_rec(this->root,arr1,arr2);
+    int ind1=0;
+    int ind2=0;
+    return fill_empty_tree_rec(this->root,arr1,arr2,&ind1,&ind2,size1,size2);
 
 }
 /// recursive function that update node's height based on its sons, and then
@@ -284,7 +294,7 @@ RankTree<K>* operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     arr1 = arr1-size1;
     tree2.to_array_inorder(&arr2);
     arr2 = arr2-size2;
-    new_tree->fill_empty_tree(&arr1,&arr2);
+    new_tree->fill_empty_tree(&arr1,&arr2,size1,size2);
     free(arr1);
     free(arr2);
     //delete &tree1;
