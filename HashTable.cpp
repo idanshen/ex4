@@ -94,7 +94,7 @@ StatusType LinkedList::remove_server(int ServerID){
 
 Server* LinkedList::find_server(int ServerID) {
     Server* current=head;
-    while(head){
+    while(current){
         if(current->getID()==ServerID){
             return current;
         }
