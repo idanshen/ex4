@@ -107,19 +107,19 @@ StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** a
     }
     if(!node->left_son && !node->right_son){
         if(*ind1>=size1){
-            *(node->data)=**arr2;
+            *(node->data)=*(*arr2+*ind2);
             *ind2+=1;
         }
         else if(*ind2>=size2){
-            *(node->data)=**arr1;
+            *(node->data)= *(*arr1+*ind1);
             *ind1+=1;
         }
-        else if(**arr1<**arr2){
-            *(node->data)=**arr1;
+        else if(*(*arr1+*ind1)<*(*arr2+*ind2)){
+            *(node->data)=*(*arr1+*ind1);
             *ind1+=1;
         }
         else{
-            *(node->data)=**arr2;
+            *(node->data)=*(*arr2+*ind2);
             *ind2+=1;
         }
         update_height_not_rec(node);
@@ -129,22 +129,21 @@ StatusType RankTree<K>::fill_empty_tree_rec(generic_node<K>* node,K** arr1,K** a
         fill_empty_tree_rec(node->left_son, arr1, arr2,ind1,ind2,size1,size2);
     }
     if(*ind1>=size1){
-        *(node->data)=**arr2;
+        *(node->data)=*(*arr2+*ind2);
         *ind2+=1;
     }
     else if(*ind2>=size2){
-        *(node->data)=**arr1;
+        *(node->data)= *(*arr1+*ind1);
         *ind1+=1;
     }
-    else if(**arr1<**arr2){
-        *(node->data)=**arr1;
+    else if(*(*arr1+*ind1)<*(*arr2+*ind2)){
+        *(node->data)=*(*arr1+*ind1);
         *ind1+=1;
     }
     else{
-        *(node->data)=**arr2;
+        *(node->data)=*(*arr2+*ind2);
         *ind2+=1;
     }
-
     if(node->right_son) {
         fill_empty_tree_rec(node->right_son, arr1, arr2,ind1,ind2,size1,size2);
     }
@@ -159,6 +158,7 @@ StatusType RankTree<K>::fill_empty_tree(K** arr1,K** arr2,int size1,int size2){
     }
     int ind1=0;
     int ind2=0;
+    K* temp=(*arr1+1);
     return fill_empty_tree_rec(this->root,arr1,arr2,&ind1,&ind2,size1,size2);
 
 }
