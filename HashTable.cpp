@@ -122,10 +122,13 @@ LinkedList::~LinkedList() {
 }
 
 HashTable::HashTable(int array_size):array_size(array_size),num_of_servers(0){
-    dynamic_arr= new LinkedList* [array_size];
-    for (int i=0;i<array_size;i++){
-        dynamic_arr[i]=nullptr;
+    try {
+        dynamic_arr = new LinkedList *[array_size];
+        for (int i = 0; i < array_size; i++) {
+            dynamic_arr[i] = new LinkedList();
+        }
     }
+    catch(bad_alloc &b){}
 }
 
 int HashTable::HashFunc(int serverID) {
@@ -135,7 +138,10 @@ int HashTable::HashFunc(int serverID) {
 StatusType HashTable::resize_table(int new_size) {
     LinkedList **new_arr;
     try {
-        new_arr = new LinkedList *[new_size];
+        new_arr = new LinkedList*[new_size];
+        for(int i=0;i<new_size;i++){
+            new_arr[i]=new LinkedList();
+        }
     }
     catch(bad_alloc &b){
         return ALLOCATION_ERROR;
@@ -145,6 +151,7 @@ StatusType HashTable::resize_table(int new_size) {
     array_size=new_size;
     dynamic_arr=new_arr;
     for(int i=0;i<old_size;i++){
+
         LinkedList* lst=old_arr[i];
         if(lst){
             Server* current=lst->getHead();
@@ -155,9 +162,9 @@ StatusType HashTable::resize_table(int new_size) {
                 Insert(serverID,DataCenterID,Traffic); //TODO: what if it fails for bad alloc
                 current=current->getNext();
             }
-
         }
         delete lst;
+
     }
     delete old_arr;
     return SUCCESS;
