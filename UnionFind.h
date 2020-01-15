@@ -26,7 +26,7 @@ UnionFind<K>::UnionFind(int size) : size(size) {
         parent = new int[size+1];
         size_of_group = new int[size+1];
         pointers = new K*[size+1];
-        for (int i=1; i<=size; i++){
+        for (int i=0; i<=size; i++){
             parent[i] = i;
             size_of_group[i] = 1;
             pointers[i]=new K();
@@ -38,9 +38,12 @@ UnionFind<K>::UnionFind(int size) : size(size) {
 
 template <class K>
 UnionFind<K>::~UnionFind() {
+    for (int i=0; i<=size; i++){
+        if (size_of_group[i]!=0) delete pointers[i];
+    }
+    delete[] pointers;
     delete[] parent;
     delete[] size_of_group;
-    delete[] pointers;
 }
 
 template <class K>
@@ -57,8 +60,8 @@ StatusType UnionFind<K>::Union(int p, int q) {
         temp2=pointers[real_q];
         pointers[real_p] = *pointers[real_p]+*pointers[real_q];
         //pointers[q] = pointers[p];
-        //delete temp1;
-        //delete temp2;
+        delete temp1;
+        delete temp2;
         parent[real_q] = real_p;
     } else {
         size_of_group[real_q] += size_of_group[real_p];
@@ -67,8 +70,8 @@ StatusType UnionFind<K>::Union(int p, int q) {
         temp2=pointers[real_q];
         pointers[real_q] = *pointers[real_p]+*pointers[real_q];
         //pointers[p] = pointers[q];
-        //delete temp1;
-        //delete temp2;
+        delete temp1;
+        delete temp2;
         parent[real_p] = real_q;
     }
     return SUCCESS;

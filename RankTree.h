@@ -158,7 +158,7 @@ StatusType RankTree<K>::fill_empty_tree(K** arr1,K** arr2,int size1,int size2){
     }
     int ind1=0;
     int ind2=0;
-    K* temp=(*arr1+1);
+    //K* temp=(*arr1+1);
     return fill_empty_tree_rec(this->root,arr1,arr2,&ind1,&ind2,size1,size2);
 
 }

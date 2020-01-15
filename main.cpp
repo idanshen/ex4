@@ -263,9 +263,10 @@ int main() {
     }
     s=RemoveServer(*DS,60);
     Quit(DS);
+    delete DS;
 
 
-
+    printf("%d\n", s);
     cout<<"*******************************************************"<<"\n";
     cout<<"*******************************************************"<<"\n";
     cout<<"YOU HAVE PASSED THE TEST ^___^"<<"\n"<<"GOOD LUCK IN THE FINAL EXAM";

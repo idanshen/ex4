@@ -16,7 +16,7 @@ class AVLTree : public SearchTree<K>{
     void free_postorder_rec(generic_node<K> *curr_node);
     public:
     AVLTree<K>();
-    ~AVLTree<K>();
+    virtual ~AVLTree<K>();
     StatusType insert(K& data) override;
     StatusType insert(K& data, generic_node<K> **ptr_to_node);
     StatusType remove(K data) override;

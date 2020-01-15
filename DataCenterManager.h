@@ -9,10 +9,10 @@
 #include "ServerData.h"
 
 class DataCenterManager {
-    UnionFind<RankTree<ServerData>> dc_unionfind;
-    HashTable dc_hashtable;
-    RankTree<ServerData> main_tree;
     int size;
+    HashTable dc_hashtable;
+    UnionFind<RankTree<ServerData>> dc_unionfind;
+    RankTree<ServerData> main_tree;
 public:
     explicit DataCenterManager(int n);
     ~DataCenterManager() = default;

@@ -47,7 +47,7 @@ class HashTable{
     StatusType resize_table(int new_size);
 public:
     explicit HashTable(int array_size);
-    ~HashTable()=default;
+    ~HashTable();
     StatusType Insert(int serverID, int DataCenterID,int traffic=0);
     StatusType Delete(int serverID);
     Server* Search(int serverID);
