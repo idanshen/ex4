@@ -69,6 +69,7 @@ StatusType LinkedList::remove_server(int ServerID){
             if(!(current->getPrev())){
                 if(!current->getNext()){
                     head= nullptr;
+                    last_node= nullptr;
                 }
                 else {
                     head = current->getNext();
@@ -165,7 +166,10 @@ StatusType HashTable::resize_table(int new_size) {
                 int serverID=current->getID();
                 int DataCenterID=current->getDataCenterID();
                 int Traffic=current->GetTraffic();
-                Insert(serverID,DataCenterID,Traffic); //TODO: what if it fails for bad alloc
+                StatusType res1=Insert(serverID,DataCenterID,Traffic);
+                if(res1==ALLOCATION_ERROR){
+                    return ALLOCATION_ERROR;
+                }
                 current=current->getNext();
             }
         }
