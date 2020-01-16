@@ -53,6 +53,7 @@ StatusType UnionFind<K>::Union(int p, int q) {
     K* temp2;
     int real_p = this->Find_root(p);
     int real_q = this->Find_root(q);
+    if (real_p==real_q) return SUCCESS;
     if (size_of_group[real_p]>size_of_group[real_q]){
         size_of_group[real_p] += size_of_group[real_q];
         size_of_group[real_q] = 0;
