@@ -25,7 +25,7 @@ public:
     };
     generic_node<K>() : height(0), left_son(NULL), right_son(NULL), father(NULL), subtree_size(1), subtree_sum(0) {data= nullptr;}
     ~generic_node() {
-        //delete data;
+        delete data;
     };
 };
 

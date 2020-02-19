@@ -25,12 +25,13 @@ StatusType DataCenterManager::SetTraffic(int serverID, int traffic) {
     }
     else if ((res->GetTraffic()==0)&&(traffic!=0)) {
         try{
-            res->SetTraffic(traffic);
             auto new_s = new ServerData(serverID,traffic);
+            auto new_s2 = new ServerData(serverID,traffic);
             RankTree<ServerData> *tree;
             dc_unionfind.Find(res->getDataCenterID(),&tree);
             tree->insert(*new_s);
-            main_tree.insert(*new_s);
+            main_tree.insert(*new_s2);
+            res->SetTraffic(traffic);
             return SUCCESS;
         }
         catch(bad_alloc& b){
@@ -38,18 +39,17 @@ StatusType DataCenterManager::SetTraffic(int serverID, int traffic) {
         }
     } else if  ((res->GetTraffic()!=0)&&(traffic!=0)) {
         try{
-            res->SetTraffic(traffic);
-            auto for_search = new ServerData(serverID,traffic);
+            auto for_search = new ServerData(serverID,res->GetTraffic());
+            auto new_s = new ServerData(serverID,traffic);
+            auto new_s2 = new ServerData(serverID,traffic);
             RankTree<ServerData> *tree;
-            generic_node<ServerData> *node;
             dc_unionfind.Find(res->getDataCenterID(),&tree);
-            tree->find(*for_search,&node);
-            node->data->set_traffic(traffic);
-            tree->update_height(node);
-            main_tree.find(*for_search,&node);
-            node->data->set_traffic(traffic);
-            main_tree.update_height(node);
+            tree->remove(*for_search);
+            tree->insert(*new_s);
+            main_tree.remove(*for_search);
+            main_tree.insert(*new_s2);
             delete(for_search);
+            res->SetTraffic(traffic);
             return SUCCESS;
         }
         catch(bad_alloc& b){
@@ -58,19 +58,20 @@ StatusType DataCenterManager::SetTraffic(int serverID, int traffic) {
     }
     else if ((res->GetTraffic()!=0)&&(traffic==0)){
         try{
-            res->SetTraffic(traffic);
-            auto for_search = new ServerData(serverID,traffic);
+            auto for_search = new ServerData(serverID,res->GetTraffic());
             RankTree<ServerData> *tree;
             dc_unionfind.Find(res->getDataCenterID(),&tree);
             tree->remove(*for_search);
             main_tree.remove(*for_search);
             delete(for_search);
+            res->SetTraffic(traffic);
             return SUCCESS;
         }
         catch(bad_alloc& b){
             return ALLOCATION_ERROR;
         }
     }
+    return SUCCESS;
 }
 
 StatusType DataCenterManager::RemoveServer(int serverID) {

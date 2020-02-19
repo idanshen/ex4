@@ -81,7 +81,6 @@ StatusType LinkedList::remove_server(int ServerID){
                 last_node=current->getPrev();
                 last_node->setNext(nullptr);
                 delete current;
-
             }
             else{
                 Server* prev=current->getPrev();
@@ -122,7 +121,7 @@ LinkedList::~LinkedList() {
 
 }
 
-HashTable::HashTable(int array_size):array_size(array_size),num_of_servers(0){
+HashTable::HashTable(int array_size): array_size(array_size), num_of_servers(0){
     try {
         dynamic_arr = new LinkedList *[array_size];
         for (int i = 0; i < array_size; i++) {
@@ -130,6 +129,13 @@ HashTable::HashTable(int array_size):array_size(array_size),num_of_servers(0){
         }
     }
     catch(bad_alloc &b){}
+}
+
+HashTable::~HashTable() {
+    for (int i = 0; i < array_size; i++) {
+        delete dynamic_arr[i];
+    }
+    delete[] dynamic_arr;
 }
 
 int HashTable::HashFunc(int serverID) {
@@ -170,7 +176,7 @@ StatusType HashTable::resize_table(int new_size) {
         delete lst;
 
     }
-    delete old_arr;
+    delete[] old_arr;
     return SUCCESS;
 
 }
@@ -226,3 +232,4 @@ Server* HashTable::Search(int serverID) {
     Server* s=lst->find_server(serverID);
     return s;
 }
+
