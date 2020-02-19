@@ -292,6 +292,12 @@ template <class K>
 RankTree<K>* operator+( RankTree<K> &tree1, RankTree<K> &tree2){
     int size1=tree1.get_tree_size();
     int size2=tree2.get_tree_size();
+    /////////// what we added
+    if(size1==0 && size2==0){
+        auto new_empty_tree = new RankTree<K>();
+        return new_empty_tree;
+    }
+    /////////////////////
 
     auto arr1 = (K*)malloc(sizeof(K)*(size1));
     auto arr2 = (K*)malloc(sizeof(K)*(size2));
