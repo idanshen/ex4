@@ -29,6 +29,11 @@ RankTree<K>::RankTree():AVLTree<K>() {}
 ///recursively build a tree with empty nodes
 template <class K>
 StatusType RankTree<K>::build_empty_tree(generic_node<K>* node,int levels,int height,int* leaves){
+    ///////// What we added
+    if(levels==0){
+        return SUCCESS;
+    }
+    ////////
     if(height==levels){
         *leaves-=1;
         return SUCCESS;
